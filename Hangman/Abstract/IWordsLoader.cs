@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hangman.Abstract
+﻿namespace Hangman.Abstract
 {
     public interface IWordsLoader
     {
         public List<string> Words { get; }
+
+        public List<string> LoadWords();
     }
 }

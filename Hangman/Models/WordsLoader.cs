@@ -1,9 +1,4 @@
 ﻿using Hangman.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hangman.Models
 {
@@ -18,7 +13,7 @@ namespace Hangman.Models
         private readonly string _fullPathToFile;
 
         public List<string> Words { get => this._words; }
-   
+
         public WordsLoader()
         {
             this._fileName = "WordsStockRus.txt";
@@ -28,7 +23,7 @@ namespace Hangman.Models
             this._words = LoadWords();
         }
 
-        private List<string> LoadWords()
+        public List<string> LoadWords()
         {
             return new List<string>(File.ReadAllLines(this._fullPathToFile));
         }

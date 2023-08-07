@@ -1,51 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Hangman.Abstract;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Hangman.Models
 {
-    internal class GameService
+    internal class GameService : IGameService
     {
-        private int _step;
+        private bool _endgame;
+
+        public int currentTry;
+
+        public HangmanField Field { get; set; }
 
         private string _secretWord;
 
-        public StringBuilder answer;
+        public readonly int maxTries;
 
-        protected readonly int maxTries;
-        
         private readonly WordsLoader _wordsLoader;
 
+        public string SecretWord { get => _secretWord; }
+
         public GameService()
-        {    
+        {
+            this._endgame = false;
+            this.maxTries = 6;
+            this.Field = new HangmanField();
             this._wordsLoader = new WordsLoader();
             Random random = new Random();
-            this._secretWord = this._wordsLoader.Words[random.Next(this._wordsLoader.Words.Count - 1)];
-            this.answer = new StringBuilder(new string('-', this._secretWord.Length));
-        }
-        
-        public string GetWord()
-        {
-            return this._secretWord;
-        }
-        
-        public bool CanPlay()
-        {
-            return true;
+            this.Field._secretNumber = random.Next(this._wordsLoader.Words.Count - 1);
+            this._secretWord = this._wordsLoader.Words[this.Field._secretNumber];
+            this.Field._temp = this._secretWord.ToCharArray();
+            this.Field.answer = new StringBuilder(new string('-', this._secretWord.Length));
         }
 
-        internal bool TrySetCharInField(string yourAnswer)
+        public bool CanPlay()
+        {
+            return !this._endgame;
+        }
+
+        public void CheckStatus()
+        {
+            if (this.currentTry == this.maxTries)
+            {
+                this._secretWord = this._wordsLoader.Words[this.Field._secretNumber];
+                this._endgame = true;
+            }
+        }
+
+        public bool CheckWin()
+        {
+            return !this.Field.answer.ToString().Contains("-");
+        }
+        public bool TrySetCharInField(char yourAnswer)
         {
             var result = this._secretWord.Contains(yourAnswer);
-            Console.WriteLine(yourAnswer);
             if (result)
             {
                 var index = this._secretWord.IndexOf(yourAnswer);
-                this.answer[index] = yourAnswer[0];
-                this._step++;
-                Console.WriteLine("Hello from if");
+                this.Field.answer[index] = yourAnswer;
+
+
+                this.Field._temp[index] = '+';
+                this._secretWord = string.Join("", this.Field._temp);
+            }
+            else
+            {
+                this.currentTry++;
             }
             return result;
         }
