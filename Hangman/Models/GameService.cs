@@ -50,6 +50,7 @@ namespace Hangman.Models
         {
             return !this.Field.answer.ToString().Contains("-");
         }
+
         public bool TrySetCharInField(char yourAnswer)
         {
             var result = this._secretWord.Contains(yourAnswer);
@@ -62,10 +63,8 @@ namespace Hangman.Models
                 this.Field._temp[index] = '+';
                 this._secretWord = string.Join("", this.Field._temp);
             }
-            else
-            {
-                this.currentTry++;
-            }
+            else this.currentTry++;
+
             return result;
         }
     }

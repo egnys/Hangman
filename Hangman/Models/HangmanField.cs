@@ -21,6 +21,7 @@ namespace Hangman.Models
             field.AppendLine($"|   {(currentField >= 4 ? "/|" : "")}{(currentField == 3 ? " |" : "")}{(currentField >= 5 ? "\\" : "")}");
             field.AppendLine($"|   {(currentField >= 6 ? "/" : "")} {(currentField >= 7 ? "\\" : "")}");
             field.AppendLine($"|");
+
             return field.ToString();
         }
     }

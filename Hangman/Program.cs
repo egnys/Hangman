@@ -5,6 +5,7 @@ namespace Hangman
     internal sealed class Program
     {
         public static GameService service = new GameService(maxTries: 7);
+
         static void Main(string[] args)
         {
             Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}");
@@ -51,7 +52,6 @@ namespace Hangman
                 {
                     Console.Clear();
                     Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}", Console.ForegroundColor = ConsoleColor.Gray);
-
 
                     continue;
                 }
