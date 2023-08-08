@@ -25,7 +25,14 @@ namespace Hangman.Models
 
         public List<string> LoadWords()
         {
-            return new List<string>(File.ReadAllLines(this._fullPathToFile));
+            try
+            {
+                return new List<string>(File.ReadAllLines(this._fullPathToFile));
+            }
+            catch
+            {
+                throw new FileNotFoundException("Не удалось найти файл со словами для игры.");
+            }
         }
 
     }
