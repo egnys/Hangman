@@ -1,4 +1,5 @@
 ﻿using Hangman.Models;
+using System.Text.RegularExpressions;
 
 namespace Hangman
 {
@@ -12,36 +13,40 @@ namespace Hangman
 
             StartGameLoop();
         }
-
+        private static void ShowCurrentGameState()
+        {
+            Console.Clear();
+            Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}", Console.ForegroundColor = ConsoleColor.Gray);
+        }
         private static void StartGameLoop()
         {
             while (service.CanPlay())
             {
                 Console.WriteLine(service.Field.DrawField(service.currentTry));
                 Console.Write($"Введите букву, которая может быть в слове: ", Console.ForegroundColor = ConsoleColor.Gray);
+                
+                Regex regex = new Regex(@"^[а-я]$");
 
-                if (!char.TryParse(Console.ReadLine(), out char yourAnswer))
+                if (!char.TryParse(Console.ReadLine(), out char yourAnswer) && regex.IsMatch(yourAnswer.ToString()))
                 {
-                    Console.WriteLine("Пожалуйста, введите только одну букву!", Console.ForegroundColor = ConsoleColor.Red);
+                    Console.WriteLine("Пожалуйста, введите только одну букву нижнего регистра!", Console.ForegroundColor = ConsoleColor.Red);
                     continue;
                 }
-
+                
                 var result = service.TrySetCharInField(yourAnswer);
 
                 service.CheckStatus();
 
                 if (service.CheckWin())
                 {
-                    Console.Clear();
-                    Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}", Console.ForegroundColor = ConsoleColor.Gray);
+                    ShowCurrentGameState();
                     Console.WriteLine($"Поздравляем! Вы правильно отгадали слово.");
 
                     break;
                 }
                 if (!service.CanPlay())
                 {
-                    Console.Clear();
-                    Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}", Console.ForegroundColor = ConsoleColor.Gray);
+                    ShowCurrentGameState();
                     Console.WriteLine(service.Field.DrawField(service.currentTry));
                     Console.WriteLine($"Вы проиграли! Секретное слово - {service.SecretWord}.");
 
@@ -50,14 +55,12 @@ namespace Hangman
 
                 if (!result)
                 {
-                    Console.Clear();
-                    Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}", Console.ForegroundColor = ConsoleColor.Gray);
+                    ShowCurrentGameState();
 
                     continue;
                 }
 
-                Console.Clear();
-                Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}", Console.ForegroundColor = ConsoleColor.Gray);
+                ShowCurrentGameState();
             }
         }
     }
