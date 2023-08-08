@@ -12,15 +12,15 @@ namespace Hangman.Models
 
         public HangmanField() { }
 
-        public override string ToString()
+        public string DrawField(int currentField)
         {
             var field = new StringBuilder();
             field.AppendLine("_______");
-            field.AppendLine("|");
-            field.AppendLine("|");
-            field.AppendLine("|");
-            field.AppendLine("|");
-            field.AppendLine("|");
+            field.AppendLine($"|    {(currentField >= 1 ? "|" : "")}");
+            field.AppendLine($"|    {(currentField >= 2 ? "O" : "")}");
+            field.AppendLine($"|   {(currentField >= 4 ? "/|" : "")}{(currentField == 3 ? " |" : "")}{(currentField >= 5 ? "\\" : "")}");
+            field.AppendLine($"|   {(currentField >= 6 ? "/" : "")} {(currentField >= 7 ? "\\" : "")}");
+            field.AppendLine($"|");
             return field.ToString();
         }
     }

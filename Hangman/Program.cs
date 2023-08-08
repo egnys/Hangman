@@ -4,29 +4,19 @@ namespace Hangman
 {
     internal sealed class Program
     {
-        public static GameService service = new GameService();
+        public static GameService service = new GameService(maxTries: 7);
         static void Main(string[] args)
         {
             Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}");
+
             StartGameLoop();
-            /*          StringBuilder sb = new StringBuilder();
-                        sb.AppendLine("_______");
-                        sb.Append("|"); sb.AppendLine("     |");
-                        sb.Append("|"); sb.AppendLine("     O");
-                        sb.Append("|"); sb.Append("     |"); sb.AppendLine("\\");
-                        sb.Append("|"); sb.Append("    /"); sb.AppendLine(" \\");
-                        sb.Append("|");*/
-
-
-
-            //Console.WriteLine(sb);
         }
 
         private static void StartGameLoop()
         {
             while (service.CanPlay())
             {
-                Console.WriteLine(service.Field);
+                Console.WriteLine(service.Field.DrawField(service.currentTry));
                 Console.Write($"Введите букву, которая может быть в слове: ", Console.ForegroundColor = ConsoleColor.Gray);
 
                 if (!char.TryParse(Console.ReadLine(), out char yourAnswer))
@@ -51,6 +41,7 @@ namespace Hangman
                 {
                     Console.Clear();
                     Console.WriteLine($"Угадайте слово:\t{service.Field.answer}\tПопытки: {service.maxTries - service.currentTry}", Console.ForegroundColor = ConsoleColor.Gray);
+                    Console.WriteLine(service.Field.DrawField(service.currentTry));
                     Console.WriteLine($"Вы проиграли! Секретное слово - {service.SecretWord}.");
 
                     break;

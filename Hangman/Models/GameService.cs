@@ -9,7 +9,7 @@ namespace Hangman.Models
 
         public int currentTry;
 
-        public HangmanField Field { get; set; }
+        public HangmanField Field;
 
         private string _secretWord;
 
@@ -19,10 +19,10 @@ namespace Hangman.Models
 
         public string SecretWord { get => _secretWord; }
 
-        public GameService()
+        public GameService(int maxTries)
         {
             this._endgame = false;
-            this.maxTries = 6;
+            this.maxTries = maxTries;
             this.Field = new HangmanField();
             this._wordsLoader = new WordsLoader();
             Random random = new Random();
